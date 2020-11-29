@@ -1,4 +1,4 @@
 const hello = (name:String) => {
   return `hellp ${name}`
 }
-hello(123)
+hello('123')
