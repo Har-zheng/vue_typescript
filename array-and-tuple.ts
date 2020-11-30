@@ -4,4 +4,5 @@ function test(){
   console.log(arguments)
 }
 let user:[string,number] = ['hongzhen',  30]
-user.push(false)
+user.push(3)
+console.log(user)
