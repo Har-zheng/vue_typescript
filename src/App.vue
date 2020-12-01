@@ -23,7 +23,7 @@
 //   }
 // });
 //   ref,
-import { computed, reactive, toRefs } from "vue";
+import { computed, reactive, toRefs, onMounted,onUpdated, onRenderTriggered } from "vue";
 interface DataProps {
   count: number;
   double: number;
@@ -41,6 +41,17 @@ export default {
     // const increase = () => {
     //   count.value++
     // }
+    
+    onMounted(()=> {
+      console.log('onMounted')
+    })
+    onUpdated(() => {
+      console.log('onUpdated')
+    })
+    // 新增api onRenderTriggered  记录哪些值重新render之后发生了变化
+    onRenderTriggered((event)=> {
+      console.log(event)
+    })
     const data: DataProps = reactive({
       count: 0,
       increase: () => {
