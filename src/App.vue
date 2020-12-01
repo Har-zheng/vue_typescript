@@ -8,8 +8,11 @@
       <h1>{{ number }}</h1>
     </li>
   </ul>
+  <h1>X: {{ x }} Y: {{ y }}</h1>
   <h1>{{ person.name }}</h1>
   <button @click="increase">测试TS</button>
+  <h1>{{ greetings }}</h1>
+  <button @click="updateGreeting">测试TS</button>
 </template>
 
 <script lang="ts">
@@ -23,7 +26,17 @@
 //   }
 // });
 //   ref,
-import { computed, reactive, toRefs, onMounted,onUpdated, onRenderTriggered } from "vue";
+import {
+  ref,
+  computed,
+  reactive,
+  toRefs,
+  onMounted,
+  onUpdated,
+  onRenderTriggered,
+  watch,
+} from "vue";
+import useMousePosition from "./hooks/useMousePosition";
 interface DataProps {
   count: number;
   double: number;
@@ -41,17 +54,17 @@ export default {
     // const increase = () => {
     //   count.value++
     // }
-    
-    onMounted(()=> {
-      console.log('onMounted')
-    })
+
+    onMounted(() => {
+      console.log("onMounted");
+    });
     onUpdated(() => {
-      console.log('onUpdated')
-    })
+      console.log("onUpdated");
+    });
     // 新增api onRenderTriggered  记录哪些值重新render之后发生了变化
-    onRenderTriggered((event)=> {
-      console.log(event)
-    })
+    onRenderTriggered((event) => {
+      console.log(event);
+    });
     const data: DataProps = reactive({
       count: 0,
       increase: () => {
@@ -59,13 +72,27 @@ export default {
       },
       double: computed(() => data.count * 2),
       numbers: [1, 2, 3],
-      person: {}
+      person: {},
     });
     data.numbers[0] = 5;
-    data.person.name = 'zhz'
+    data.person.name = "zhz";
+    const greetings = ref("");
+    const updateGreeting = () => {
+      greetings.value += "Hello";
+    };
+    const { x, y } = useMousePosition();
+    watch([greetings, () => data.count], (newValue, oldVaue) => {
+      console.log(newValue, oldVaue);
+      document.title = "update" + greetings.value;
+    });
+
     const refData = toRefs(data);
     return {
-      ...refData
+      ...refData,
+      greetings,
+      updateGreeting,
+      x,
+      y
     };
   },
 };
