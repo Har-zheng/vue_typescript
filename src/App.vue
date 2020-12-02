@@ -1,5 +1,5 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
+  <img alt="Vue logo" src="./assets/logo.png">
   <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" /> -->
   <h1>{{ count }}</h1>
   <h1>{{ double }}</h1>
@@ -9,7 +9,9 @@
     </li>
   </ul>
   <h1>{{ person.name }}</h1>
-  <button @click="increase">测试TS</button>
+  <button @click="increase">
+    测试TS
+  </button> 
 </template>
 
 <script lang="ts">
@@ -23,7 +25,7 @@
 //   }
 // });
 //   ref,
-import { computed, reactive, toRefs, onMounted,onUpdated, onRenderTriggered } from "vue";
+import { computed, reactive, toRefs, onMounted, onUpdated, onRenderTriggered } from 'vue' 
 interface DataProps {
   count: number;
   double: number;
@@ -31,8 +33,8 @@ interface DataProps {
   numbers: number[];
   person: { name?: string };
 }
-export default {
-  name: "APP",
+export default {  
+  name: 'APP',
   setup() {
     // const count = ref(0)
     // const double = computed(()=> {
@@ -41,34 +43,34 @@ export default {
     // const increase = () => {
     //   count.value++
     // }
-    
-    onMounted(()=> {
+
+    onMounted(() => {
       console.log('onMounted')
     })
     onUpdated(() => {
       console.log('onUpdated')
     })
     // 新增api onRenderTriggered  记录哪些值重新render之后发生了变化
-    onRenderTriggered((event)=> {
+    onRenderTriggered((event) => {
       console.log(event)
     })
     const data: DataProps = reactive({
       count: 0,
       increase: () => {
-        data.count++;
+        data.count++
       },
       double: computed(() => data.count * 2),
       numbers: [1, 2, 3],
       person: {}
-    });
-    data.numbers[0] = 5;
+    })
+    data.numbers[0] = 5
     data.person.name = 'zhz'
-    const refData = toRefs(data);
+    const refData = toRefs(data)
     return {
       ...refData
-    };
-  },
-};
+    }
+  }
+}
 </script>
 
 <style>
