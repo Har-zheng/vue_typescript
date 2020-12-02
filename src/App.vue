@@ -15,7 +15,8 @@
   <button @click="increase">测试TS</button>
   <h1>{{ greetings }}</h1>
   <button @click="updateGreeting">测试TS</button>
-  <model></model>
+  <button @click="openModal">MyModel</button>
+  <model  :isOpen="modelIsopen" @close-modle="onModelClose">MyModel</model>
 </template>
 
 <script lang="ts">
@@ -116,7 +117,14 @@ export default {
       console.log(newValue, oldVaue);
       document.title = "update" + greetings.value;
     });
-
+    const modelIsopen = ref(false);
+    const openModal = () => {
+      console.log(modelIsopen)
+     return modelIsopen.value = true;
+    };
+    const onModelClose = () => {
+      modelIsopen.value = false;
+    };
     const refData = toRefs(data);
     return {
       ...refData,
@@ -128,6 +136,9 @@ export default {
       loading,
       loaded,
       error,
+      modelIsopen,
+      openModal,
+      onModelClose,
     };
   },
 };
