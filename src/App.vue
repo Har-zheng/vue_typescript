@@ -11,15 +11,17 @@
   <h1>X: {{ x }} Y: {{ y }}</h1>
   <h1>{{ person.name }}</h1>
   <h1 v-if="loading">Loading!.....</h1>
-  <img v-else :src="result.message" />
+  <img v-else :src="result[0].url" />
   <button @click="increase">测试TS</button>
   <h1>{{ greetings }}</h1>
   <button @click="updateGreeting">测试TS</button>
+  <model></model>
 </template>
 
 <script lang="ts">
 // import { defineComponent } from 'vue';
 // import HelloWorld from './components/HelloWorld.vue';
+import model from "./components/model.vue";
 
 // export default defineComponent({
 //   name: 'App',
@@ -47,12 +49,21 @@ interface DataProps {
   numbers: number[];
   person: { name?: string };
 }
-interface DogResult {
-  message: string;
-  status: string;
+// interface DogResult {
+//   message: string;
+//   status: string;
+// }
+interface CatResult {
+  id: string;
+  url: string;
+  width: number;
+  height: number;
 }
 export default {
   name: "APP",
+  components: {
+    model,
+  },
   setup() {
     // const count = ref(0)
     // const double = computed(()=> {
@@ -89,12 +100,16 @@ export default {
     };
     const { x, y } = useMousePosition();
     //  api_key=3993eab7-83e1-49ff-b965-ccfe97caca10
-    const { result, loading, loaded, error } = useURLLoader<DogResult>(
-      "https://dog.ceo/api/breeds/image/random"
+    // const { result, loading, loaded, error } = useURLLoader<DogResult>(
+    //   "https://dog.ceo/api/breeds/image/random"
+    // );
+    const { result, loading, loaded, error } = useURLLoader<CatResult[]>(
+      "https://api.thecatapi.com/v1/images/search"
     );
     watch(result, () => {
       if (result.value) {
-        console.log(result.value.message);
+        console.log(result.value[0].url);
+        console.log(result.value[0].url);
       }
     });
     watch([greetings, () => data.count], (newValue, oldVaue) => {
