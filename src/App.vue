@@ -1,5 +1,5 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
+  <img alt="Vue logo" src="./assets/logo.png" />
   <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" /> -->
   <h1>{{ count }}</h1>
   <h1>{{ double }}</h1>
@@ -8,10 +8,13 @@
       <h1>{{ number }}</h1>
     </li>
   </ul>
+  <h1>X: {{ x }} Y: {{ y }}</h1>
   <h1>{{ person.name }}</h1>
-  <button @click="increase">
-    测试TS
-  </button> 
+  <h1 v-if="loading">Loading!.....</h1>
+  <img v-else :src="result.message" />
+  <button @click="increase">测试TS</button>
+  <h1>{{ greetings }}</h1>
+  <button @click="updateGreeting">测试TS</button>
 </template>
 
 <script lang="ts">
@@ -25,7 +28,18 @@
 //   }
 // });
 //   ref,
-import { computed, reactive, toRefs, onMounted, onUpdated, onRenderTriggered } from 'vue' 
+import {
+  ref,
+  computed,
+  reactive,
+  toRefs,
+  onMounted,
+  onUpdated,
+  onRenderTriggered,
+  watch,
+} from "vue";
+import useMousePosition from "./hooks/useMousePosition";
+import useURLLoader from "./hooks/useURLLoader";
 interface DataProps {
   count: number;
   double: number;
@@ -33,8 +47,12 @@ interface DataProps {
   numbers: number[];
   person: { name?: string };
 }
-export default {  
-  name: 'APP',
+interface DogResult {
+  message: string;
+  status: string;
+}
+export default {
+  name: "APP",
   setup() {
     // const count = ref(0)
     // const double = computed(()=> {
@@ -45,32 +63,59 @@ export default {
     // }
 
     onMounted(() => {
-      console.log('onMounted')
-    })
+      console.log("onMounted");
+    });
     onUpdated(() => {
-      console.log('onUpdated')
-    })
+      console.log("onUpdated");
+    });
     // 新增api onRenderTriggered  记录哪些值重新render之后发生了变化
     onRenderTriggered((event) => {
-      console.log(event)
-    })
+      console.log(event);
+    });
     const data: DataProps = reactive({
       count: 0,
       increase: () => {
-        data.count++
+        data.count++;
       },
       double: computed(() => data.count * 2),
       numbers: [1, 2, 3],
-      person: {}
-    })
-    data.numbers[0] = 5
-    data.person.name = 'zhz'
-    const refData = toRefs(data)
+      person: {},
+    });
+    data.numbers[0] = 5;
+    data.person.name = "zhz";
+    const greetings = ref("");
+    const updateGreeting = () => {
+      greetings.value += "Hello";
+    };
+    const { x, y } = useMousePosition();
+    //  api_key=3993eab7-83e1-49ff-b965-ccfe97caca10
+    const { result, loading, loaded, error } = useURLLoader<DogResult>(
+      "https://dog.ceo/api/breeds/image/random"
+    );
+    watch(result, () => {
+      if (result.value) {
+        console.log(result.value.message);
+      }
+    });
+    watch([greetings, () => data.count], (newValue, oldVaue) => {
+      console.log(newValue, oldVaue);
+      document.title = "update" + greetings.value;
+    });
+
+    const refData = toRefs(data);
     return {
-      ...refData
-    }
-  }
-}
+      ...refData,
+      greetings,
+      updateGreeting,
+      x,
+      y,
+      result,
+      loading,
+      loaded,
+      error,
+    };
+  },
+};
 </script>
 
 <style>

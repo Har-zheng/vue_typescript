@@ -19,7 +19,6 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   }
 }
-
 // module.exports = {
 //   root: true,
 //   parserOptions: {
@@ -214,3 +213,4 @@ module.exports = {
 //     'array-bracket-spacing': [2, 'never']
 //   }
 // }
+
