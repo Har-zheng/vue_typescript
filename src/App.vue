@@ -92,7 +92,7 @@ export default {
       greetings,
       updateGreeting,
       x,
-      y
+      y,
     };
   },
 };
