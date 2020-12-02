@@ -3,14 +3,22 @@
   <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" /> -->
   <h1>{{ count }}</h1>
   <h1>{{ double }}</h1>
-  <Suspense>
+  <p>{{ errorInfo }}</p>
+  <div>
+ <Suspense>
     <template #default>
+      <div>
+
       <AsyncShow></AsyncShow>
+      <DogShow></DogShow>
+      </div>
     </template>
     <template #fallback>
-      Loading  !.....
-    </template>
+      <h1> Loading !..... </h1>
+       </template>
   </Suspense>
+  </div>
+ 
   <!-- <AsyncShow></AsyncShow> -->
   <ul>
     <li v-for="number of numbers" :key="number">
@@ -33,6 +41,7 @@
 // import HelloWorld from './components/HelloWorld.vue';
 import model from "./components/model.vue";
 import AsyncShow from "./components/AsyncShow.vue";
+import DogShow from "./components/DogShow.vue";
 
 // export default defineComponent({
 //   name: 'App',
@@ -49,7 +58,8 @@ import {
   onMounted,
   onUpdated,
   onRenderTriggered,
-  watch
+  watch,
+  onErrorCaptured,
 } from "vue";
 import useMousePosition from "./hooks/useMousePosition";
 import useURLLoader from "./hooks/useURLLoader";
@@ -74,7 +84,8 @@ export default {
   name: "APP",
   components: {
     model,
-    AsyncShow
+    AsyncShow,
+    DogShow,
   },
   setup() {
     // const count = ref(0)
@@ -84,7 +95,11 @@ export default {
     // const increase = () => {
     //   count.value++
     // }
-
+    const errorInfo = ref(null);
+    onErrorCaptured((e: any) => {
+      errorInfo.value = e;
+      return true
+    });
     onMounted(() => {
       console.log("onMounted");
     });
@@ -150,6 +165,7 @@ export default {
       modelIsopen,
       openModal,
       onModelClose,
+      errorInfo
     };
   },
 };
