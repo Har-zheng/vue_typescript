@@ -2,14 +2,17 @@
 module.exports = {
   root: true,
   env: {
-    node: true
+    node: true,
+    node: true,
+    es6: true,
   },
   'extends': [
     'plugin:vue/vue3-essential',
     'eslint:recommended'
   ],
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: 'babel-eslint',
+    sourceType: 'module'
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -210,4 +213,3 @@ module.exports = {
 //     'array-bracket-spacing': [2, 'never']
 //   }
 // }
-

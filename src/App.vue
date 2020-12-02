@@ -3,6 +3,15 @@
   <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" /> -->
   <h1>{{ count }}</h1>
   <h1>{{ double }}</h1>
+  <Suspense>
+    <template #default>
+      <AsyncShow></AsyncShow>
+    </template>
+    <template #fallback>
+      Loading  !.....
+    </template>
+  </Suspense>
+  <!-- <AsyncShow></AsyncShow> -->
   <ul>
     <li v-for="number of numbers" :key="number">
       <h1>{{ number }}</h1>
@@ -10,14 +19,20 @@
   </ul>
   <h1>X: {{ x }} Y: {{ y }}</h1>
   <h1>{{ person.name }}</h1>
+  <h1 v-if="loading">Loading!.....</h1>
+  <img v-else :src="result[0].url" />
   <button @click="increase">测试TS</button>
   <h1>{{ greetings }}</h1>
   <button @click="updateGreeting">测试TS</button>
+  <button @click="openModal">MyModel</button>
+  <model :isOpen="modelIsopen" @close-modle="onModelClose">MyModel</model>
 </template>
 
 <script lang="ts">
 // import { defineComponent } from 'vue';
 // import HelloWorld from './components/HelloWorld.vue';
+import model from "./components/model.vue";
+import AsyncShow from "./components/AsyncShow.vue";
 
 // export default defineComponent({
 //   name: 'App',
@@ -34,9 +49,10 @@ import {
   onMounted,
   onUpdated,
   onRenderTriggered,
-  watch,
+  watch
 } from "vue";
 import useMousePosition from "./hooks/useMousePosition";
+import useURLLoader from "./hooks/useURLLoader";
 interface DataProps {
   count: number;
   double: number;
@@ -44,8 +60,22 @@ interface DataProps {
   numbers: number[];
   person: { name?: string };
 }
+// interface DogResult {
+//   message: string;
+//   status: string;
+// }
+interface CatResult {
+  id: string;
+  url: string;
+  width: number;
+  height: number;
+}
 export default {
   name: "APP",
+  components: {
+    model,
+    AsyncShow
+  },
   setup() {
     // const count = ref(0)
     // const double = computed(()=> {
@@ -81,11 +111,31 @@ export default {
       greetings.value += "Hello";
     };
     const { x, y } = useMousePosition();
+    //  api_key=3993eab7-83e1-49ff-b965-ccfe97caca10
+    // const { result, loading, loaded, error } = useURLLoader<DogResult>(
+    //   "https://dog.ceo/api/breeds/image/random"
+    // );
+    const { result, loading, loaded, error } = useURLLoader<CatResult[]>(
+      "https://api.thecatapi.com/v1/images/search"
+    );
+    watch(result, () => {
+      if (result.value) {
+        console.log(result.value[0].url);
+        console.log(result.value[0].url);
+      }
+    });
     watch([greetings, () => data.count], (newValue, oldVaue) => {
       console.log(newValue, oldVaue);
       document.title = "update" + greetings.value;
     });
-
+    const modelIsopen = ref(false);
+    const openModal = () => {
+      console.log(modelIsopen);
+      return (modelIsopen.value = true);
+    };
+    const onModelClose = () => {
+      modelIsopen.value = false;
+    };
     const refData = toRefs(data);
     return {
       ...refData,
@@ -93,6 +143,13 @@ export default {
       updateGreeting,
       x,
       y,
+      result,
+      loading,
+      loaded,
+      error,
+      modelIsopen,
+      openModal,
+      onModelClose,
     };
   },
 };
