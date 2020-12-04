@@ -10,6 +10,7 @@ let zhz: Person = {
   name: 'zhz',
   age: 25,
   bbb: 1,
-  cc: 1
+  cc: 1,
+  aaaaa:12
 }
 // zhz.id = 2
