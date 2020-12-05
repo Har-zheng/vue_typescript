@@ -24,9 +24,8 @@ const testData: ColumnProps[] = [
   },
   {
     id: 2,
-    title: 'test2的专栏',
-    description: '这里是专栏二 ，一个有趣的简介',
-    avatar: 'https://images.dog.ceo/breeds/maltese/n02085936_10073.jpg'
+    title: 'test3的专栏',
+    description: '这里是专栏二 ，一个有趣的简介'
 
   },
   {
