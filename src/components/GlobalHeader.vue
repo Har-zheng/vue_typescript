@@ -12,7 +12,11 @@
     </ul>
     <ul v-else class="list-inline mb-0">
        <li class="list-inline-item nav-item">
-          <a class="btn btn-outline-lig" href="#">你好</a>
+         <dropdown :title="`你好 ${ user.name }`">
+           <DropdownItem><a href="#" class="dropdown-item"> 新建文章 </a></DropdownItem>
+           <DropdownItem><a href="#" class="dropdown-item"> 编辑资料 </a></DropdownItem>
+           <DropdownItem><a href="#" class="dropdown-item"> 退出登录 </a></DropdownItem>
+         </dropdown>
         </li>
     </ul>
   </nav>
@@ -20,6 +24,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
+import dropdown from './Dropdown.vue'
+import DropdownItem from './DropdownItem.vue'
 export interface UserProps {
   isLogin: boolean;
   name?: string;
@@ -27,6 +33,10 @@ export interface UserProps {
 }
 export default defineComponent({
   name: 'GlobalHeader',
+  components: {
+    dropdown,
+    DropdownItem
+  },
   props: {
     user: {
       type: Object as PropType<UserProps>,
