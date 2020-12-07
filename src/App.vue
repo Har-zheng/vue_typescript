@@ -12,7 +12,7 @@
           v-model="emailRef.val"
           @blur="validateEmail"
         />
-        <div class="from-text" v-if="emailRef.error">{{ emailRef.message }}</div>
+        <ValidateInput :rules="emailRules"></ValidateInput>
         <!-- <div id="emailHelp" class="form-text">
           We'll never share your email with anyone else.
         </div> -->
@@ -39,11 +39,13 @@
 import { defineComponent, reactive } from 'vue'
 import ColumnList, { ColumnProps } from './components/ColumnList.vue'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
+import ValidateInput, { RulesProp } from './components/ValidateInput.vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 const currentUser: UserProps = {
   isLogin: true,
   name: 'zhz'
 }
+const emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
 const testData: ColumnProps[] = [
   {
     id: 1,
@@ -79,9 +81,14 @@ export default defineComponent({
   name: 'App',
   components: {
     ColumnList,
-    GlobalHeader
+    GlobalHeader,
+    ValidateInput
   },
   setup () {
+    const emailRules: RulesProp = [
+      { type: 'required', message: '电子邮箱不能为空' },
+      { type: 'email', message: '请输入正确的电子邮箱' }
+    ]
     const emailRef = reactive({
       val: '',
       error: false,
@@ -92,13 +99,17 @@ export default defineComponent({
       if (emailRef.val.trim() === '') {
         emailRef.error = true
         emailRef.message = 'can not empty'
+      } else if (!emailReg.test(emailRef.val)) {
+        emailRef.error = true
+        emailRef.message = 'should be valid email'
       }
     }
     return {
       list: testData,
       currentUser,
       emailRef,
-      validateEmail
+      validateEmail,
+      emailRules
     }
   }
 })
