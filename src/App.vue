@@ -9,10 +9,13 @@
           class="form-control"
           id="exampleInputEmail1"
           aria-describedby="emailHelp"
+          v-model="emailRef.val"
+          @blur="validateEmail"
         />
-        <div id="emailHelp" class="form-text">
+        <div class="from-text" v-if="emailRef.error">{{ emailRef.message }}</div>
+        <!-- <div id="emailHelp" class="form-text">
           We'll never share your email with anyone else.
-        </div>
+        </div> -->
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Password</label>
@@ -33,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import ColumnList, { ColumnProps } from './components/ColumnList.vue'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -79,9 +82,23 @@ export default defineComponent({
     GlobalHeader
   },
   setup () {
+    const emailRef = reactive({
+      val: '',
+      error: false,
+      message: ''
+    })
+    const validateEmail = () => {
+      console.log('123')
+      if (emailRef.val.trim() === '') {
+        emailRef.error = true
+        emailRef.message = 'can not empty'
+      }
+    }
     return {
       list: testData,
-      currentUser
+      currentUser,
+      emailRef,
+      validateEmail
     }
   }
 })
