@@ -12,16 +12,24 @@
           v-model="emailRef.val"
           @blur="validateEmail"
         />
-        <ValidateInput :rules="emailRules"></ValidateInput>
+        <ValidateInput
+          placeholder="hello"
+          :rules="emailRules"
+          v-model="emailVal"
+        ></ValidateInput>
+        {{ emailVal }}
         <!-- <div id="emailHelp" class="form-text">
           We'll never share your email with anyone else.
         </div> -->
       </div>
       <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input
+        <label for="exampleInputPassword1" class="form-label">密码</label>
+        <ValidateInput
           type="password"
           class="form-control"
+          placeholder="请输入密码"
+          :rules="passwordRules"
+          v-model="passwordVal"
           id="exampleInputPassword1"
         />
       </div>
@@ -36,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import ColumnList, { ColumnProps } from './components/ColumnList.vue'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
 import ValidateInput, { RulesProp } from './components/ValidateInput.vue'
@@ -85,6 +93,7 @@ export default defineComponent({
     ValidateInput
   },
   setup () {
+    const emailVal = ref('zhz')
     const emailRules: RulesProp = [
       { type: 'required', message: '电子邮箱不能为空' },
       { type: 'email', message: '请输入正确的电子邮箱' }
@@ -109,7 +118,8 @@ export default defineComponent({
       currentUser,
       emailRef,
       validateEmail,
-      emailRules
+      emailRules,
+      emailVal
     }
   }
 })
