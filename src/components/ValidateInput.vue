@@ -10,8 +10,8 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, PropType } from 'vue'
-
+import { defineComponent, reactive, PropType, onMounted } from 'vue'
+import { emitter } from './ValidateFrom.vue'
 interface RuleProp {
   type: 'required' | 'email';
   message: string;
@@ -53,8 +53,13 @@ export default defineComponent({
           return passed
         })
         inputRef.error = !allPassed
+        return allPassed
       }
+      return true
     }
+    onMounted(() => {
+      emitter.emit('from-item-created', inputRef.val)
+    })
     return {
       inputRef,
       validateInput,

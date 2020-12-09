@@ -1,26 +1,16 @@
 <template>
   <div class="container">
     <GlobalHeader :user="currentUser"></GlobalHeader>
-    <form>
+   <ValidateFrom @from-submit="onFromSumit">
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">邮箱地址</label>
-        <input
-          type="email"
-          class="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-          v-model="emailRef.val"
-          @blur="validateEmail"
-        />
         <ValidateInput
           placeholder="hello"
           :rules="emailRules"
           v-model="emailVal"
+          ref='inputRef'
         ></ValidateInput>
         {{ emailVal }}
-        <!-- <div id="emailHelp" class="form-text">
-          We'll never share your email with anyone else.
-        </div> -->
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">密码</label>
@@ -33,12 +23,10 @@
           id="exampleInputPassword1"
         />
       </div>
-      <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+      <template #submit>
+        <span class="btn btn-danger" >Submit</span>
+      </template>
+   </ValidateFrom>
     <ColumnList :list="list"></ColumnList>
   </div>
 </template>
@@ -48,6 +36,7 @@ import { defineComponent, reactive, ref } from 'vue'
 import ColumnList, { ColumnProps } from './components/ColumnList.vue'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
 import ValidateInput, { RulesProp } from './components/ValidateInput.vue'
+import ValidateFrom from './components/ValidateFrom.vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 const currentUser: UserProps = {
   isLogin: true,
@@ -90,19 +79,27 @@ export default defineComponent({
   components: {
     ColumnList,
     GlobalHeader,
-    ValidateInput
+    ValidateInput,
+    ValidateFrom
   },
   setup () {
-    const emailVal = ref('zhz')
+    const inputRef = ref<any>()
+    const emailVal = ref('123@qq.com')
     const emailRules: RulesProp = [
       { type: 'required', message: '电子邮箱不能为空' },
       { type: 'email', message: '请输入正确的电子邮箱' }
     ]
+    const passwordVal = ref(123)
     const emailRef = reactive({
       val: '',
       error: false,
       message: ''
     })
+    const onFromSumit = (e: boolean) => {
+      console.log(inputRef.value.validateInput())
+
+      console.log(e)
+    }
     const validateEmail = () => {
       console.log('123')
       if (emailRef.val.trim() === '') {
@@ -119,7 +116,10 @@ export default defineComponent({
       emailRef,
       validateEmail,
       emailRules,
-      emailVal
+      emailVal,
+      onFromSumit,
+      inputRef,
+      passwordVal
     }
   }
 })
