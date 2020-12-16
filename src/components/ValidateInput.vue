@@ -13,7 +13,7 @@
 import { defineComponent, reactive, PropType, onMounted } from 'vue'
 import { emitter } from './ValidateFrom.vue'
 interface RuleProp {
-  type: 'required' | 'email';
+  type: 'required' | 'email' | 'password';
   message: string;
 }
 const emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
@@ -26,7 +26,7 @@ export default defineComponent({
   inheritAttrs: false,
   setup (props, context) {
     const inputRef = reactive({
-      val: '',
+      val: '123',
       error: false,
       message: ''
     })
@@ -58,7 +58,7 @@ export default defineComponent({
       return true
     }
     onMounted(() => {
-      emitter.emit('from-item-created', inputRef.val)
+      emitter.emit('form-item-created', inputRef.val)
     })
     return {
       inputRef,

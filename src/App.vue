@@ -83,22 +83,25 @@ export default defineComponent({
     ValidateFrom
   },
   setup () {
-    const inputRef = ref<any>()
+    const inputRef = ref(123)
     const emailVal = ref('123@qq.com')
+    const passwordVal = ref(123)
+    // 正则表达式邮箱验证失败时触发的提醒
     const emailRules: RulesProp = [
       { type: 'required', message: '电子邮箱不能为空' },
       { type: 'email', message: '请输入正确的电子邮箱' }
     ]
-    const passwordVal = ref(123)
+    const passwordRules: RulesProp = [
+      { type: 'required', message: '密码不能为空' },
+      { type: 'password', message: '密码不能小于6位数' }
+    ]
     const emailRef = reactive({
       val: '',
       error: false,
       message: ''
     })
     const onFromSumit = (e: boolean) => {
-      console.log(inputRef.value.validateInput())
-
-      console.log(e)
+      // console.log(inputRef.value.validateInput())
     }
     const validateEmail = () => {
       console.log('123')
@@ -119,7 +122,8 @@ export default defineComponent({
       emailVal,
       onFromSumit,
       inputRef,
-      passwordVal
+      passwordVal,
+      passwordRules
     }
   }
 })
