@@ -8,7 +8,6 @@
           placeholder="hello"
           :rules="emailRules"
           v-model="emailVal"
-          ref='inputRef'
         ></ValidateInput>
         {{ emailVal }}
       </div>
@@ -22,6 +21,7 @@
           v-model="passwordVal"
           id="exampleInputPassword1"
         />
+        {{ passwordVal }}
       </div>
       <template #submit>
         <span class="btn btn-danger" >Submit</span>
@@ -83,7 +83,7 @@ export default defineComponent({
     ValidateFrom
   },
   setup () {
-    const inputRef = ref(123)
+    const inputRef = ref('123')
     const emailVal = ref('123@qq.com')
     const passwordVal = ref(123)
     // 正则表达式邮箱验证失败时触发的提醒

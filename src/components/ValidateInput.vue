@@ -2,9 +2,10 @@
   <div class="validate-input-container pb-3">
     <input type="text" class="form-control" :class="{ 'is-invalid': inputRef.error }"
     :value="inputRef.val"
-    @input="updateValue"
+    @blur="validateInput"
     v-bind="$attrs"
     >
+    {{ inputRef }}
     <span v-if="inputRef.error" class="invalid-feedback"> {{ inputRef.message }} </span>
   </div>
 </template>
@@ -25,23 +26,29 @@ export default defineComponent({
   },
   inheritAttrs: false,
   setup (props, context) {
+    // 为解决响应式数据的监听页面响应   这个vue2.X时的 $set 相类似
     const inputRef = reactive({
-      val: '123',
+      val: '',
       error: false,
       message: ''
     })
     const updateValue = (e: KeyboardEvent) => {
       const targetValue = (e.target as HTMLInputElement).value
+      console.log(targetValue)
       inputRef.val = targetValue
       context.emit('update:modelValue', targetValue)
     }
-    const validateInput = () => {
+    const validateInput = (e: KeyboardEvent) => {
+      const targetValue = (e.target as HTMLInputElement).value
+      console.log(targetValue)
+      inputRef.val = targetValue
+      context.emit('update:modelValue', inputRef.val)
       if (props.rules) {
         const allPassed = props.rules.every(rule => {
           let passed = true
           inputRef.message = rule.message
           switch (rule.type) {
-            case 'required':
+            case 'password':
               passed = (inputRef.val.trim() !== '')
               break
             case 'email':
@@ -53,6 +60,7 @@ export default defineComponent({
           return passed
         })
         inputRef.error = !allPassed
+
         return allPassed
       }
       return true
