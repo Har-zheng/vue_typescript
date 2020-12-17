@@ -9,6 +9,8 @@ interface Radio {
 interface Battery{
   checkBatteryStatus():void;
 }
+// 定义一个类对应接口  
+// 和之前的 extends相比 implements 可定进行多个接口的对应
 class Car implements Radio {
   switchRadio(trigger:boolean){
 

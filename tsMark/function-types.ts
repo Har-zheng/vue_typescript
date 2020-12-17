@@ -1,3 +1,4 @@
+// 定义函数类型
 const add = (x: number, y: number, z?: number) => {
   if (typeof z === 'number') {
 
