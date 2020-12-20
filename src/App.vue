@@ -9,6 +9,7 @@
 import { defineComponent, reactive, ref } from 'vue'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
+
 const currentUser: UserProps = {
   isLogin: true,
   name: 'zhz'
