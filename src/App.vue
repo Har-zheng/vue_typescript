@@ -6,9 +6,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { computed, defineComponent, reactive, ref } from 'vue'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { useStore } from 'vuex'
 
 const currentUser: UserProps = {
   isLogin: true,
@@ -23,7 +24,8 @@ export default defineComponent({
   },
   setup () {
     const inputRef = ref('123')
-
+    const store = useStore()
+    const currentUser = computed(() => store.state.user)
     const emailRef = reactive({
       val: '',
       error: false,

@@ -32,6 +32,7 @@ import { defineComponent, ref } from 'vue'
 import ValidateInput, { RulesProp } from '../components/ValidateInput.vue'
 import ValidateFrom from '../components/ValidateFrom.vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 export default defineComponent({
   components: {
     ValidateInput,
@@ -40,6 +41,7 @@ export default defineComponent({
   setup () {
     const emailVal = ref('123@qq.com')
     const passwordVal = ref(123)
+    const store = useStore()
     // 正则表达式邮箱验证失败时触发的提醒
     const emailRules: RulesProp = [
       { type: 'required', message: '电子邮箱不能为空' },
@@ -52,7 +54,8 @@ export default defineComponent({
     const router = useRouter()
     const onFromSumit = (result: boolean) => {
       if (result) {
-        router.push({ name: 'column', params: { id: 1 } })
+        router.push('/')
+        store.commit('login')
       }
     }
     return {
