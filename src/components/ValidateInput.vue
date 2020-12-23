@@ -1,10 +1,20 @@
 <template>
   <div class="validate-input-container pb-3">
-    <input type="text" class="form-control" :class="{ 'is-invalid': inputRef.error }"
+    <input
+    v-if="tag !== 'textarea' "
+     type="text" class="form-control" :class="{ 'is-invalid': inputRef.error }"
     :value="inputRef.val"
     @blur="validateInput"
     v-bind="$attrs"
     >
+     <textarea
+      v-else
+      class="form-control"
+      :class="{'is-invalid': inputRef.error}"
+      @blur="validateInput"
+      v-model="inputRef.val"
+      v-bind="$attrs"
+    />
     {{ inputRef }}
     <span v-if="inputRef.error" class="invalid-feedback"> {{ inputRef.message }} </span>
   </div>
@@ -18,11 +28,17 @@ interface RuleProp {
   message: string;
 }
 const emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
-export type RulesProp = RuleProp[]
+export type RulesProp = RuleProp[];
+export type TagType = 'input' | 'textarea'
 export default defineComponent({
   props: {
     rules: Array as PropType<RulesProp>,
-    modelValue: String
+    modelValue: String,
+    textarea: String,
+    tag: {
+      type: String as PropType<TagType>,
+      default: 'input'
+    }
   },
   inheritAttrs: false,
   setup (props, context) {
@@ -44,12 +60,12 @@ export default defineComponent({
       inputRef.val = targetValue
       context.emit('update:modelValue', inputRef.val)
       if (props.rules) {
-        const allPassed = props.rules.every(rule => {
+        const allPassed = props.rules.every((rule) => {
           let passed = true
           inputRef.message = rule.message
           switch (rule.type) {
             case 'password':
-              passed = (inputRef.val.trim() !== '' && inputRef.val.length > 6)
+              passed = inputRef.val.trim() !== '' && inputRef.val.length > 6
               break
             case 'email':
               passed = emailReg.test(inputRef.val)
@@ -78,5 +94,4 @@ export default defineComponent({
 </script>
 
 <style>
-
 </style>

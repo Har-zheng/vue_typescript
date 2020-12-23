@@ -3,6 +3,7 @@ const login = () => import('@/views/Login.vue')
 const home = () => import('@/views/Home.vue')
 // E:\web\vue\vue_ts\src\views\ColumnDetali\ColumDetail.vue
 const column = () => import('@/views/ColumnDetali/ColumDetail.vue')
+const CreatePost = () => import('@/views/CreatePost.vue')
 const routerHandel = createWebHistory()
 const routes = [
   {
@@ -23,6 +24,11 @@ const routes = [
     path: '/column/:id',
     name: 'column',
     component: column
+  },
+  {
+    path: '/create',
+    name: 'CreatePost',
+    component: CreatePost
   }
 ]
 const router = createRouter({

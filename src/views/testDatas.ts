@@ -38,7 +38,7 @@ export const testData: ColumnProps[] = [
     avatar: 'https://images.dog.ceo/breeds/maltese/n02085936_10073.jpg'
   }
 ]
-export const testPosts:PostProps[]= [
+export const testPosts: PostProps[] = [
   {
     id: 1,
     title: '这是我的第一篇文章',
