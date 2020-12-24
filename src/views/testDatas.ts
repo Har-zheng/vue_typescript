@@ -10,7 +10,7 @@ export interface PostProps {
   content: string,
   image?: string,
   createdAt: string,
-  columnId: number,
+  columnId: number | undefined,
 }
 export const testData: ColumnProps[] = [
   {
