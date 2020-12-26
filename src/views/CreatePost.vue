@@ -20,10 +20,12 @@
         />
       </div>
       <template #submit>
-        <button class="btn btn-primary btn-large">
+        <!-- 记录默认跳转原因 ==> 使用<button> -->
+        <span class="btn btn-primary btn-large">
           发表文章
-        </button>
+        </span>
       </template>
+
     </ValidateFrom>
   </div>
 </template>
@@ -55,7 +57,7 @@ export default defineComponent({
     const contentRules: RulesProp = [
       { type: 'required', message: '文章内容不能为空哦' }
     ]
-    // const router = useRouter()
+    const router = useRouter()
     const store = useStore<GlobalDataProps>()
     const isEditMode = ref(false)
     console.log(props)
@@ -74,7 +76,7 @@ export default defineComponent({
         }
         store.commit('createPost', newPost)
         console.log(newPost)
-        // router.push({ name: 'column', params: { id: columnId } })
+        router.push({ name: 'column', params: { id: columnId } })
       }
     }
 

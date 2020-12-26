@@ -17,7 +17,7 @@ export const emitter = mitt()
 // 定义一个类型
 type ValidateFunc = () => boolean
 export default defineComponent({
-  emits: ['form-submit'],
+  emits: ['from-submit'],
   setup (props, context) {
     let funcArr: ValidateFunc[] = []
     const submitFrom = () => {
@@ -26,7 +26,7 @@ export default defineComponent({
       // 2.使用every测试这个数组中所有元素是否通过(true)，全部通过则返回true，只要有一个不通过则返回false
       const result = funcArr.map(func => func()).every(result => result)
       // 返回验证结果
-      context.emit('form-submit', result)
+      context.emit('from-submit', result)
     }
     // 对接收过来的函数进行处理，传进来的都是函数
     const callback = (func?: ValidateFunc) => {

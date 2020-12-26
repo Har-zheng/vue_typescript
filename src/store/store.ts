@@ -5,7 +5,7 @@ interface UserProps {
   isLogin: boolean;
   name?: string;
   id?: number;
-  columnId?: number
+  columnId: number
 }
 export interface GlobalDataProps {
   columns: ColumnProps[];
