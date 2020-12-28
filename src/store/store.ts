@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import axios from 'axios'
 import { testData, testPosts, PostProps, ColumnProps } from '../views/testDatas'
 
 interface UserProps {
@@ -16,7 +17,7 @@ const store = createStore<GlobalDataProps>({
   state: {
     columns: testData,
     posts: testPosts,
-    user: { isLogin: false , name: 'zhz', columnId: 1}
+    user: { isLogin: false, name: 'zhz', columnId: 1 }
   },
   mutations: {
     login(state) {
@@ -24,6 +25,16 @@ const store = createStore<GlobalDataProps>({
     },
     createPost(state, newPost) {
       state.posts.push(newPost)
+    },
+    feachColumns(state, rowData) {
+      state.columns = rowData.data.list
+    }
+  },
+  actions: {
+    fetchColumns(context) {
+      axios.get('/columns').then(res => {
+        context.commit('feachColumns', res.data)
+      })
     }
   },
   getters: {
