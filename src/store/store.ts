@@ -1,4 +1,4 @@
-import { createStore,Commit } from 'vuex'
+import { createStore, Commit } from 'vuex'
 import axios from 'axios'
 
 interface UserProps {
@@ -28,20 +28,23 @@ export interface PostProps {
   createdAt: string;
   column: string;
 }
+
 export interface GlobalDataProps {
   columns: ColumnProps[];
   posts: PostProps[];
-  user: UserProps
+  user: UserProps,
+  loading: boolean
 }
-const getAndCommit = async (url: string, mutationName: string, commit:Commit  ) => {
-const { data } = await axios.get(url)
-commit(mutationName, data)
+const getAndCommit = async (url: string, mutationName: string, commit: Commit) => {
+  const { data } = await axios.get(url)
+  commit(mutationName, data)
 }
 const store = createStore<GlobalDataProps>({
   state: {
     columns: [],
     posts: [],
-    user: { isLogin: false, name: 'zhz', columnId: 1 }
+    user: { isLogin: false, name: 'zhz', columnId: 1 },
+    loading: false
   },
   mutations: {
     login(state) {
@@ -58,12 +61,15 @@ const store = createStore<GlobalDataProps>({
     },
     fetchPosts(state, rowData) {
       state.posts = rowData.data.list
+    },
+    setloading(state, status) {
+      state.loading = status
     }
   },
 
   //  actions 支持异步提交数据
   actions: {
-     fetchColumns({commit}) {
+    fetchColumns({ commit }) {
       getAndCommit('/columns', 'fetchColumns', commit)
     },
     fetchColumn({ commit }, cid) {

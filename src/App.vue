@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <GlobalHeader :user="currentUser"></GlobalHeader>
+    <Loader v-if="isLoading"  text="正在加载中" background="rgba(0,0,0, 0.8)" />
     <router-view></router-view>
   </div>
 </template>
@@ -10,22 +11,24 @@ import { computed, defineComponent, reactive, ref } from 'vue'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useStore } from 'vuex'
-
+import Loader from './components/Loader.vue'
 const currentUser: UserProps = {
   isLogin: true,
   name: 'zhz'
 }
-const emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+// const emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
 
 export default defineComponent({
   name: 'App',
   components: {
-    GlobalHeader
+    GlobalHeader,
+    Loader
   },
   setup () {
     const inputRef = ref('123')
     const store = useStore()
     const currentUser = computed(() => store.state.user)
+    const isLoading = computed(() => store.state.loading)
     const emailRef = reactive({
       val: '',
       error: false,
@@ -38,7 +41,8 @@ export default defineComponent({
       currentUser,
       emailRef,
       onFromSumit,
-      inputRef
+      inputRef,
+      isLoading
     }
   }
 })
