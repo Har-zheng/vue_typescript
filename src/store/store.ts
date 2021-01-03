@@ -39,6 +39,10 @@ const getAndCommit = async (url: string, mutationName: string, commit: Commit) =
   const { data } = await axios.get(url)
   commit(mutationName, data)
 }
+const postAndCommit = async (url: string, mutationName: string, commit: Commit, Payload: object) => {
+  const { data } = await axios.post(url, Payload)
+  commit(mutationName, data)
+}
 const store = createStore<GlobalDataProps>({
   state: {
     columns: [],
@@ -47,9 +51,7 @@ const store = createStore<GlobalDataProps>({
     loading: false
   },
   mutations: {
-    login(state) {
-      state.user = { isLogin: true, name: 'zhz', columnId: 1 }
-    },
+
     createPost(state, newPost) {
       state.posts.push(newPost)
     },
@@ -64,7 +66,10 @@ const store = createStore<GlobalDataProps>({
     },
     setloading(state, status) {
       state.loading = status
-    }
+    },
+    login(state, user) {
+      state.user = user.data.user
+    },
   },
 
   //  actions 支持异步提交数据
@@ -77,6 +82,9 @@ const store = createStore<GlobalDataProps>({
     },
     fetchPosts({ commit }, cid) {
       getAndCommit(`/columns/${cid}/posts`, 'fetchPosts', commit)
+    },
+    login({ commit }, Payload) {
+      postAndCommit(`/user/login`, 'login', commit, Payload)
     }
   },
   getters: {

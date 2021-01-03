@@ -65,7 +65,7 @@ export default defineComponent({
           inputRef.message = rule.message
           switch (rule.type) {
             case 'password':
-              passed = inputRef.val.trim() !== '' && inputRef.val.length > 6
+              passed = inputRef.val.trim() !== '' && inputRef.val.length >= 6
               break
             case 'email':
               passed = emailReg.test(inputRef.val)

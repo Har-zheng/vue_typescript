@@ -54,8 +54,16 @@ export default defineComponent({
     const router = useRouter()
     const onFromSumit = (result: boolean) => {
       if (result) {
-        router.push('/')
-        store.commit('login')
+        const payload = {
+          email: emailVal.value,
+          password: passwordVal.value
+        }
+        store.dispatch('login', payload).then(res => {
+          console.log(res)
+          if (res) {
+            router.push('/')
+          }
+        })
       }
     }
     return {
