@@ -2,6 +2,7 @@
    <ValidateFrom @from-submit="onFromSumit">
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">邮箱地址</label>
+        123456@qq.com
         <ValidateInput
           placeholder="hello"
           :rules="emailRules"
@@ -39,8 +40,8 @@ export default defineComponent({
     ValidateFrom
   },
   setup () {
-    const emailVal = ref('123@qq.com')
-    const passwordVal = ref(123)
+    const emailVal = ref('123456@qq.com')
+    const passwordVal = ref(123456)
     const store = useStore()
     // 正则表达式邮箱验证失败时触发的提醒
     const emailRules: RulesProp = [

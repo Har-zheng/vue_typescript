@@ -1,5 +1,6 @@
 import { createStore, Commit } from 'vuex'
 import axios from 'axios'
+import jwtDecode from 'jwt-decode'
 
 interface UserProps {
   isLogin: boolean;
@@ -40,7 +41,10 @@ const getAndCommit = async (url: string, mutationName: string, commit: Commit) =
   commit(mutationName, data)
 }
 const postAndCommit = async (url: string, mutationName: string, commit: Commit, Payload: object) => {
-  const { data } = await axios.post(url, Payload)
+  const { data: { data } } = await axios.post(url, Payload)
+
+  console.log(jwtDecode(data.token))
+
   commit(mutationName, data)
 }
 const store = createStore<GlobalDataProps>({
@@ -68,7 +72,8 @@ const store = createStore<GlobalDataProps>({
       state.loading = status
     },
     login(state, user) {
-      state.user = user.data.user
+      state.user = user.data.token
+      axios.defaults.headers.common['Authorization'] = `Bearer  ${user.data.token}`
     },
   },
 
@@ -84,6 +89,7 @@ const store = createStore<GlobalDataProps>({
       getAndCommit(`/columns/${cid}/posts`, 'fetchPosts', commit)
     },
     login({ commit }, Payload) {
+      console.log(Payload)
       postAndCommit(`/user/login`, 'login', commit, Payload)
     }
   },

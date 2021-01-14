@@ -12,10 +12,7 @@ import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useStore } from 'vuex'
 import Loader from './components/Loader.vue'
-const currentUser: UserProps = {
-  isLogin: true,
-  name: 'zhz'
-}
+
 // const emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
 
 export default defineComponent({
