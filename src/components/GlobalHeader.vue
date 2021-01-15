@@ -7,12 +7,15 @@
     <a href="#" class="navbar-brand">者也专栏</a>
     <ul v-if="!user.isLogin" class="list-inline mb-0">
        <li class="list-inline-item nav-item">
-          <a class="btn btn-outline-success" href="#">Pricing</a>
+          <a class="btn btn-outline-success" href="#">登录</a>
+        </li>
+       <li class="list-inline-item nav-item">
+          <a class="btn btn-outline-success" href="#">注册</a>
         </li>
     </ul>
     <ul v-else class="list-inline mb-0">
        <li class="list-inline-item nav-item">
-         <dropdown :title="`你好 ${ user.name }`">
+         <dropdown :title="`你好 ${ user.nickName }`">
            <DropdownItem><a href="#" class="dropdown-item"> 新建文章 </a></DropdownItem>
            <DropdownItem><a href="#" class="dropdown-item"> 编辑资料 </a></DropdownItem>
            <DropdownItem><a href="#" class="dropdown-item"> 退出登录 </a></DropdownItem>
@@ -26,11 +29,7 @@
 import { defineComponent, PropType } from 'vue'
 import dropdown from './Dropdown.vue'
 import DropdownItem from './DropdownItem.vue'
-export interface UserProps {
-  isLogin: boolean;
-  name?: string;
-  id?: number;
-}
+import { UserProps } from '../store/store'
 export default defineComponent({
   name: 'GlobalHeader',
   components: {

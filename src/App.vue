@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, ref } from 'vue'
-import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
+import GlobalHeader from './components/GlobalHeader.vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useStore } from 'vuex'
 import Loader from './components/Loader.vue'
