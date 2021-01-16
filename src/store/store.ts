@@ -49,6 +49,11 @@ const postAndCommit = async (url: string, mutationName: string, commit: Commit, 
   commit(mutationName, data)
   return data
 }
+const initAndCommit = async (mutationName: string, commit: Commit, token: string) => {
+  const rowData: any = jwtDecode(token)
+  commit(mutationName, rowData.data)
+  return rowData.data
+}
 const store = createStore<GlobalDataProps>({
   state: {
     columns: [],
@@ -82,6 +87,10 @@ const store = createStore<GlobalDataProps>({
       localStorage.setItem('token', user.token)
       axios.defaults.headers.common['Authorization'] = `Bearer  ${user.token}`
     },
+    fetchCurrentUser(state, user) {
+      state.user = { ...user }
+      state.user.isLogin = true
+    }
   },
 
   //  actions 支持异步提交数据
@@ -99,6 +108,9 @@ const store = createStore<GlobalDataProps>({
       console.log(Payload)
       const data = await postAndCommit(`/user/login`, 'login', commit, Payload)
       return data
+    },
+    fetchCurrentUser({ commit, state }) {
+      return initAndCommit('fetchCurrentUser', commit, state.token)
     }
   },
   getters: {

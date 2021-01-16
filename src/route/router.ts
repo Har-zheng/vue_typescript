@@ -41,11 +41,30 @@ const router = createRouter({
   routes
 })
 router.beforeEach((to, form, next) => {
-  console.log(store.state.user.isLogin)
   const { user, token } = store.state
-  console.log(to.meta.reuiredLogin && !user.isLogin)
-  if (to.meta.reuiredLogin && !user.isLogin) {
-    next({ name: 'login' })
+  const { redirectAlreadyLogin, reuiredLogin } = to.meta
+  console.log(reuiredLogin)
+  console.log(!user.isLogin)
+  if (!user.isLogin) {
+    if (token) {
+      store.dispatch('fetchCurrentUser').then(() => {
+        if (redirectAlreadyLogin) {
+          next('/')
+        } else {
+          next()
+        }
+      }).catch(e => {
+        console.error(e)
+        store.commit('logout')
+        next('login')
+      })
+    } else {
+      if (reuiredLogin) {
+        next('login')
+      } else {
+        next()
+      }
+    }
   } else if (to.meta.redirectAlreadyLogin && store.state.user.isLogin) {
     next({ name: '/' })
   } else {

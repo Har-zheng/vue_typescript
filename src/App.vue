@@ -18,7 +18,7 @@ import Loader from './components/Loader.vue'
 export default defineComponent({
   name: 'App',
   components: {
-    GlobalHeader,
+    GlobalHeader, 
     Loader
   },
   setup () {
