@@ -12,7 +12,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(config => {
   setTimeout(function () {
     store.commit('setloading', false)
-  }, 3000)
+  }, 1000)
   return config
 })
 const app = createApp(App)

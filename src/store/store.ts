@@ -34,7 +34,8 @@ export interface GlobalDataProps {
   columns: ColumnProps[];
   posts: PostProps[];
   user: UserProps,
-  loading: boolean
+  loading: boolean,
+  token: string
 }
 const getAndCommit = async (url: string, mutationName: string, commit: Commit) => {
   const { data } = await axios.get(url)
@@ -53,7 +54,8 @@ const store = createStore<GlobalDataProps>({
     columns: [],
     posts: [],
     user: { isLogin: false, columnId: 1 },
-    loading: false
+    loading: false,
+    token: localStorage.getItem('token') || ''
   },
   mutations: {
 
@@ -73,8 +75,11 @@ const store = createStore<GlobalDataProps>({
       state.loading = status
     },
     login(state, user) {
-      state.user = { ...jwtDecode(user.token) }
+      const data: any = jwtDecode(user.token)
+      state.user = { ...data.data }
       state.user.isLogin = true
+      state.token = user.token
+      localStorage.setItem('token', user.token)
       axios.defaults.headers.common['Authorization'] = `Bearer  ${user.token}`
     },
   },

@@ -7,10 +7,10 @@
     <a href="#" class="navbar-brand">者也专栏</a>
     <ul v-if="!user.isLogin" class="list-inline mb-0">
        <li class="list-inline-item nav-item">
-          <a class="btn btn-outline-success" href="#">登录</a>
+          <router-link class="btn btn-outline-success" to="/login">登录</router-link>
         </li>
        <li class="list-inline-item nav-item">
-          <a class="btn btn-outline-success" href="#">注册</a>
+          <router-link class="btn btn-outline-success" to="/register">登录</router-link>
         </li>
     </ul>
     <ul v-else class="list-inline mb-0">

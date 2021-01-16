@@ -31,7 +31,7 @@ const routes = [
     path: '/create',
     name: 'CreatePost',
     component: CreatePost,
-    meat:{
+    meat: {
       reuiredLogin: true
     }
   }
@@ -40,16 +40,19 @@ const router = createRouter({
   history: routerHandel,
   routes
 })
-router.beforeEach((to, form, next)=> {
-  if(to.meta.reuiredLogin  && !store.state.user.isLogin){
-    next({name: 'login'})
-  } else if(to.meta.redirectAlreadyLogin  && store.state.user.isLogin){
-    next({name: '/'})
-  } else{
+router.beforeEach((to, form, next) => {
+  console.log(store.state.user.isLogin)
+  const { user, token } = store.state
+  console.log(to.meta.reuiredLogin && !user.isLogin)
+  if (to.meta.reuiredLogin && !user.isLogin) {
+    next({ name: 'login' })
+  } else if (to.meta.redirectAlreadyLogin && store.state.user.isLogin) {
+    next({ name: '/' })
+  } else {
     next()
   }
   console.log(to)
   console.log(form)
-  
+
 })
 export default router
