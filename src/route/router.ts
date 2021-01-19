@@ -23,6 +23,12 @@ const routes = [
     meta: { redirectAlreadyLogin: true }
   },
   {
+    path: '/signup',
+    name: 'signup',
+    component:() =>  import('../views/Signup.vue'),
+    meta: { redirectAlreadyLogin: false }
+  },
+  {
     path: '/column/:id',
     name: 'column',
     component: column

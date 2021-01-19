@@ -7,11 +7,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref } from 'vue'
+import { computed, defineComponent, reactive, ref, watch } from 'vue'
 import GlobalHeader from './components/GlobalHeader.vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useStore } from 'vuex'
 import Loader from './components/Loader.vue'
+import  createMessage  from './components/createMessage'
 
 // const emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
 
@@ -26,6 +27,14 @@ export default defineComponent({
     const store = useStore()
     const currentUser = computed(() => store.state.user)
     const isLoading = computed(() => store.state.loading)
+    const token  =  computed(() => store.state.token)
+   const error = computed(() => store.state.error)
+    watch(() => error.value.status, () => {
+      const { status, message } = error.value
+      if (status && message) {
+        createMessage(message, 'error')
+      }
+    })
     const emailRef = reactive({
       val: '',
       error: false,
@@ -39,7 +48,8 @@ export default defineComponent({
       emailRef,
       onFromSumit,
       inputRef,
-      isLoading
+      isLoading,
+      error
     }
   }
 })

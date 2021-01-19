@@ -34,6 +34,7 @@ import ValidateInput, { RulesProp } from '../components/ValidateInput.vue'
 import ValidateFrom from '../components/ValidateFrom.vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import createMessage from '../components/createMessage'
 export default defineComponent({
   components: {
     ValidateInput,
@@ -61,6 +62,7 @@ export default defineComponent({
         }
         store.dispatch('login', payload).then(res => {
           console.log(res)
+          createMessage('登录成功 2秒后天跳转首页!', 'success')
           if (res) {
             router.push('/')
           }

@@ -6,6 +6,7 @@ import axios from 'axios'
 // http://api.vikingship.xyz/api/columns
 axios.defaults.baseURL = 'http://localhost:3000/v1/book'
 axios.interceptors.request.use(config => {
+  store.commit('setError', { status: false, message: '' })
   store.commit('setloading', true)
   return config
 })
@@ -17,7 +18,7 @@ axios.interceptors.response.use(config => {
 }, e => {
   console.log(e.response)
   const { error } = e.response.data
-  store.commit('setError', { status:true, message: error })
+  store.commit('setError', { status: true, message: error })
   store.commit('setloading', false)
   return Promise.reject(error)
 })

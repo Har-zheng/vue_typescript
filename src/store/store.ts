@@ -2,17 +2,26 @@ import { createStore, Commit } from 'vuex'
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
 
+export interface ResponseType<P = {}> {
+  code: number;
+  msg: string;
+  data: P;
+}
 export interface UserProps {
   isLogin: boolean;
   nickName?: string;
-  id?: number;
-  columnId: number
+  _id?: string;
+  column?:string;
+  avatar?:ImageProps;
+  columnId?: number
 }
 
 // d定义图片类型
-interface ImageProps {
-  id?: string;
-  url?: string
+export interface ImageProps {
+  _id?: string;
+  url?: string;
+  createdAt?: string;
+  fitUrl?: string;
 }
 export interface ColumnProps {
   _id: string;
@@ -21,13 +30,18 @@ export interface ColumnProps {
   description: string
 }
 export interface PostProps {
-  _id: string;
+  _id?: string;
   title: string;
   excerpt?: string;
   content?: string;
   image?: string;
-  createdAt: string;
+  createdAt?: string;
   column: string;
+  author?: string | UserProps;
+}
+export interface GlobalErrorProps {
+  status: boolean;
+  message?: string;
 }
 
 export interface GlobalDataProps {
@@ -35,7 +49,8 @@ export interface GlobalDataProps {
   posts: PostProps[];
   user: UserProps,
   loading: boolean,
-  token: string
+  token: string,
+  error: GlobalErrorProps
 }
 const getAndCommit = async (url: string, mutationName: string, commit: Commit) => {
   const { data } = await axios.get(url)
@@ -60,7 +75,8 @@ const store = createStore<GlobalDataProps>({
     posts: [],
     user: { isLogin: false, columnId: 1 },
     loading: false,
-    token: localStorage.getItem('token') || ''
+    token: localStorage.getItem('token') || '',
+    error: { status: false }
   },
   mutations: {
 
@@ -90,6 +106,9 @@ const store = createStore<GlobalDataProps>({
     fetchCurrentUser(state, user) {
       state.user = { ...user }
       state.user.isLogin = true
+    },
+    setError(state, e: GlobalErrorProps) {
+      state.error = e
     }
   },
 
